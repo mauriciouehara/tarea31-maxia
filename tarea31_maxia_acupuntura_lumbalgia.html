@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tarea 31 MAXIA · Acupuntura y dolor lumbar crónico</title>
+<style>
+  :root{--bg:#17111c;--panel:#24182b;--panel2:#2d2034;--text:#f6f2f7;--muted:#c9becd;--accent:#f26b3a;--ok:#42c983;--bad:#ef6b73;--line:#4b3a53}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#120d16,#1a1220);color:var(--text)}
+  .wrap{max-width:760px;margin:auto;padding:22px 16px 40px}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:10px}
+  h1{font-size:clamp(30px,7vw,48px);line-height:1.05;margin:0 0 14px}
+  .lead{font-size:18px;line-height:1.45;color:var(--muted);margin-bottom:22px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.2)}
+  .q{font-size:22px;line-height:1.35;font-weight:700;margin:0 0 8px}
+  .sub{font-size:14px;color:var(--muted);margin-bottom:16px}
+  .option{display:block;width:100%;text-align:left;padding:15px 16px;margin:10px 0;border-radius:14px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:17px;cursor:pointer;transition:.15s}
+  .option:hover{transform:translateY(-1px);border-color:#725b7f}
+  .option:disabled{cursor:default;opacity:.98}
+  .option.correct{border-color:var(--ok);background:#173b2d}
+  .option.wrong{border-color:var(--bad);background:#452128}
+  .feedback{display:none;margin-top:18px;padding:16px;border-radius:14px;background:#141018;border:1px solid var(--line);line-height:1.5}
+  .feedback.show{display:block}
+  .result-title{font-weight:800;font-size:19px;margin-bottom:8px}
+  .stat{font-size:34px;font-weight:900;color:var(--accent);margin:10px 0 4px}
+  .note{font-size:14px;color:var(--muted)}
+  .source{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.45}
+  a{color:#ff9a74}
+  .reset{margin-top:14px;background:transparent;border:1px solid var(--line);color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer}
+  .footer{margin-top:18px;font-size:12px;color:#9e8fa5;text-align:center}
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="eyebrow">Diplomatura MAXIA · Tarea 31</div>
+    <h1>Acupuntura y dolor lumbar crónico</h1>
+    <p class="lead">Antes de ver el dato, hacé una predicción. Elegí una opción y después compará tu respuesta con la evidencia.</p>
+
+    <section class="card" aria-labelledby="pregunta">
+      <h2 id="pregunta" class="q">En adultos con dolor lumbar crónico inespecífico, cuando se agregó acupuntura al tratamiento convencional, ¿cuánto mayor fue aproximadamente la reducción promedio del dolor respecto del tratamiento convencional solo?</h2>
+      <div class="sub">Escala de dolor: 0 a 10 puntos.</div>
+
+      <button class="option" data-value="A">A. 0,2 puntos</button>
+      <button class="option" data-value="B">B. 1,0 punto</button>
+      <button class="option" data-value="C">C. 3,0 puntos</button>
+      <button class="option" data-value="D">D. 5,0 puntos</button>
+
+      <div id="feedback" class="feedback" role="status" aria-live="polite">
+        <div id="resultTitle" class="result-title"></div>
+        <div class="stat">−1,04 puntos</div>
+        <p>El metaanálisis de Asano y colaboradores encontró una diferencia media de <strong>−1,04 puntos</strong> a favor de agregar acupuntura al tratamiento convencional, con IC95% de −1,59 a −0,49.</p>
+        <p><strong>Idea clave:</strong> una mejoría clínica importante en algunos pacientes no debe confundirse con el efecto promedio adicional demostrado entre grupos.</p>
+        <p class="note">El resultado fue estadísticamente significativo, pero no implica que todos los pacientes mejoren exactamente 1 punto ni que toda la mejoría observada sea atribuible exclusivamente a la acupuntura.</p>
+        <div class="source">
+          <strong>Referencia:</strong> Asano H, Plonka D, Weeger J. <em>Effectiveness of Acupuncture for Nonspecific Chronic Low Back Pain: A Systematic Review and Meta-Analysis.</em> Med Acupunct. 2022;34(2):96–106. PMID: 35509875.<br>
+          <a href="https://pubmed.ncbi.nlm.nih.gov/35509875/" target="_blank" rel="noopener">Ver en PubMed</a>
+        </div>
+        <button class="reset" id="resetBtn">Volver a intentar</button>
+      </div>
+    </section>
+
+    <div class="footer">Actividad educativa · Sin datos de pacientes · Diseñada para uso académico</div>
+  </main>
+
+<script>
+  const options = [...document.querySelectorAll('.option')];
+  const feedback = document.getElementById('feedback');
+  const resultTitle = document.getElementById('resultTitle');
+  const resetBtn = document.getElementById('resetBtn');
+
+  options.forEach(btn => btn.addEventListener('click', () => {
+    const chosen = btn.dataset.value;
+    options.forEach(b => {
+      b.disabled = true;
+      if (b.dataset.value === 'B') b.classList.add('correct');
+    });
+    if (chosen === 'B') {
+      resultTitle.textContent = 'Correcto.';
+    } else {
+      btn.classList.add('wrong');
+      resultTitle.textContent = 'No exactamente. Mirá el dato real:';
+    }
+    feedback.classList.add('show');
+    feedback.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }));
+
+  resetBtn.addEventListener('click', () => {
+    options.forEach(b => {b.disabled=false; b.classList.remove('correct','wrong');});
+    feedback.classList.remove('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+</script>
+</body>
+</html>
